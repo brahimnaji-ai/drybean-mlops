@@ -1,0 +1,30 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Local environment variables
+.env
+
+# Experiment tracking and DVC local state
+mlruns/
+.dvc/cache/
+.dvc/tmp/
+.dvc/config.local
+
+# IDEs (allow shared VS Code settings to be added later)
+.idea/
+/.vscode/*
+!.vscode/settings.json
+
+# Operating system files
+.DS_Store
