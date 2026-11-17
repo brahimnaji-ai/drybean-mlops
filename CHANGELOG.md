@@ -11,3 +11,4 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Repository governance, contribution guidance, and README project skeleton.
 - Python 3.14 project tooling baseline with uv, linting, type-checking, tests, and pre-commit hooks.
+- Typed environment settings, validated pipeline parameters, and package scaffolding.

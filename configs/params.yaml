@@ -1,0 +1,21 @@
+seed: 42
+data:
+  golden_ratio: 0.20
+  base_ratio: 0.40
+  n_batches: 6
+train:
+  algorithm: logreg # logreg | random_forest
+  logreg:
+    C: 1.0
+    max_iter: 1000
+  random_forest:
+    n_estimators: 200
+    max_depth: null
+promotion:
+  metric: macro_f1
+  min_delta: 0.0 # strict improvement required
+  min_f1_floor: 0.0 # placeholder, calibrated in Phase 2
+monitoring:
+  window_days: 7
+  drift_share_threshold: 0.3
+  min_samples: 200
