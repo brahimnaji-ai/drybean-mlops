@@ -1,0 +1,90 @@
+name: drybean-mlops
+
+services:
+  minio:
+    image: drybean/minio:RELEASE.2025-10-15T17-29-55Z
+    build:
+      context: ./docker/minio
+      dockerfile: Dockerfile
+      args:
+        MINIO_VERSION: RELEASE.2025-10-15T17-29-55Z
+        MC_VERSION: RELEASE.2025-08-13T08-35-41Z
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?Set MINIO_ROOT_USER in .env (copy .env.example)}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD in .env (copy .env.example)}
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  minio-init:
+    image: drybean/minio:RELEASE.2025-10-15T17-29-55Z
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        mc alias set local http://minio:9000 "$${MINIO_ROOT_USER}" "$${MINIO_ROOT_PASSWORD}" >/dev/null
+        mc mb --ignore-existing local/mlflow
+        mc mb --ignore-existing local/dvc
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?Set MINIO_ROOT_USER in .env (copy .env.example)}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD in .env (copy .env.example)}
+    depends_on:
+      minio:
+        condition: service_healthy
+    restart: "no"
+
+  mlflow:
+    image: drybean/mlflow:3.18.0
+    build:
+      context: ./docker/mlflow
+      dockerfile: Dockerfile
+    command:
+      - server
+      - --host
+      - 0.0.0.0
+      - --port
+      - "5000"
+      - --backend-store-uri
+      - sqlite:////mlflow/mlflow.db
+      - --serve-artifacts
+      - --artifacts-destination
+      - s3://mlflow
+      - --allowed-hosts
+      - localhost:5000,127.0.0.1:5000,mlflow:5000
+    environment:
+      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER:?Set MINIO_ROOT_USER in .env (copy .env.example)}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD in .env (copy .env.example)}
+      AWS_DEFAULT_REGION: us-east-1
+      MLFLOW_S3_ENDPOINT_URL: http://minio:9000
+      MLFLOW_TRACKING_URI: http://localhost:5000
+    ports:
+      - "127.0.0.1:5000:5000"
+    volumes:
+      - mlflow-data:/mlflow
+    depends_on:
+      minio-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=3)"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+volumes:
+  minio-data:
+  mlflow-data:

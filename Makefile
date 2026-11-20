@@ -1,4 +1,4 @@
-.PHONY: install lint format typecheck test check
+.PHONY: install lint format typecheck test check up down down-v smoke
 
 install:
 	uv sync
@@ -18,3 +18,15 @@ test:
 	uv run pytest
 
 check: lint typecheck test
+
+up:
+	docker compose up -d --build --wait
+
+down:
+	docker compose down
+
+down-v:
+	docker compose down -v
+
+smoke:
+	bash scripts/smoke_stack.sh
