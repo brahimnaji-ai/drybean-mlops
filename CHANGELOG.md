@@ -13,3 +13,4 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Python 3.14 project tooling baseline with uv, linting, type-checking, tests, and pre-commit hooks.
 - Typed environment settings, validated pipeline parameters, and package scaffolding.
 - Local Docker Compose stack for MLflow tracking and MinIO artifact storage, with health checks and smoke verification.
+- Initialize DVC with a credential-free default MinIO remote and a temporary-cache round-trip verification script.
