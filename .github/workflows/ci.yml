@@ -14,6 +14,7 @@ concurrency:
 
 jobs:
   lint:
+    name: lint
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -36,6 +37,7 @@ jobs:
         run: uv run ruff format --check .
 
   typecheck:
+    name: typecheck
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -55,6 +57,7 @@ jobs:
         run: uv run mypy
 
   test:
+    name: test
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -81,6 +84,7 @@ jobs:
           if-no-files-found: error
 
   docker-build:
+    name: docker-build
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
