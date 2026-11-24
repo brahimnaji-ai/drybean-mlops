@@ -30,6 +30,9 @@ jobs:
       - name: Install project dependencies
         run: uv sync --frozen
 
+      - name: Hold cancellation verification window
+        run: sleep 240
+
       - name: Check lint
         run: uv run ruff check .
 
