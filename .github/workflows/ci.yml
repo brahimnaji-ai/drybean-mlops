@@ -9,6 +9,7 @@ permissions:
   contents: read
 
 concurrency:
+  # Pull request updates share a ref, so newer runs supersede older ones.
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
@@ -29,9 +30,6 @@ jobs:
 
       - name: Install project dependencies
         run: uv sync --frozen
-
-      - name: Hold cancellation verification window
-        run: sleep 240
 
       - name: Check lint
         run: uv run ruff check .
