@@ -1,4 +1,4 @@
-FROM python:3.14.10-slim
+FROM python:3.15.1-slim
 
 ENV HOME=/home/mlflow \
     PYTHONDONTWRITEBYTECODE=1 \
