@@ -30,6 +30,6 @@ python rest.py
 for f in img/usecase.png img/class_*.png img/seq_*.png img/comm.png img/activity.png img/state.png img/arch.png; do cp "$f" ..; done
 ```
 
-The supplied images were not regenerated while adding this index. The regeneration commands have not been run in this environment because Graphviz (`dot`) and Python `matplotlib` are unavailable here. Keep the supplied images as-is; when the prerequisites are available, run the commands in a disposable copy of `src/` to avoid overwriting the provided assets.
+The regeneration commands were attempted in a disposable copy of `src/` on Windows. They could not complete: `actors.py` and `seq.py` stop because Python `matplotlib` is not installed, while `usecase.py`, `classdiag.py`, and `rest.py` stop because Graphviz `dot` is not installed. No supplied images were regenerated or changed. Run the commands in a disposable copy of `src/` on a machine with both prerequisites to verify successful regeneration.
 
 When the design changes, update the affected diagram and its source in the same pull request as the code change.
