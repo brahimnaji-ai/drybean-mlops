@@ -83,11 +83,11 @@ Run `bash scripts/dvc_roundtrip.sh` to verify a push/pull round trip using tempo
 
 ## Documentation
 
-Project plan, UML diagrams, and architecture decision records will be added in P1-09:
+Project design documents:
 
-- [Project plan](docs/plan/)
-- [UML diagrams](docs/uml/)
-- [Architecture decision records](docs/adr/)
+- [Project plan](docs/plan/drybean-mlops-project-plan.pdf)
+- [UML diagrams and regeneration guide](docs/uml/README.md)
+- [Architecture decision records](docs/adr/README.md)
 
 ## Contributing
 
