@@ -2,7 +2,7 @@
 
 Automated MLOps pipeline (data versioning, training, safe deployment, drift monitoring) for UCI Dry Bean classification.
 
-<!-- CI badge added in P1-07 -->
+[![CI](https://github.com/brahimnaji-ai/drybean-mlops/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/brahimnaji-ai/drybean-mlops/actions/workflows/ci.yml)
 
 ## Overview
 
